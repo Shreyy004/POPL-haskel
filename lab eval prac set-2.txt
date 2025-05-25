@@ -1,0 +1,84 @@
+1. Duplicate the elements of a list. If the original list is [1,2,3,4], the result should be [1,1,2,2,3,3,4,4]
+2. Modify Q1 solution such that you give two lists, the elements of second list needs to be repeated that many times as the first list's corresponding entry. For example, let the first list be [2,3,2] and the second list is [10, 11, 12]. The resulting list should be [10,10, 11,11,11, 12,12]
+3. Drop every N'th element from a list.
+4.Split a list into two parts; the length of the first part is given.
+5. Create a list containing all integers within a given range. If the range is between 5 and 9, the output should be [5,6,7,8,9]
+6. Write a function to check whether a number is prime. If 3 is given, it should return "Yes". If 6 is given, it should return "No"
+7. Write a function to return the positive factors of a positive integer as a list.
+8. Write a function that takes a list of Strings and returns the smallest string.
+
+1)
+duplicate :: [a] -> [a]
+duplicate [] = []  -- Base case: An empty list results in an empty list
+duplicate (x:xs) = x : x : duplicate xs  -- Duplicate the first element and recurse
+
+2)
+replicateElements :: [Int] -> [a] -> [a]
+replicateElements [] [] = []  -- Base case: both lists are empty
+replicateElements (n:ns) (x:xs) = replicate n x ++ replicateElements ns xs
+replicateElements _ _ = error "Lists must have the same length"  -- Handle unequal list lengths
+
+(without using built-in)
+replicateElements :: [Int] -> [a] -> [a]
+replicateElements [] [] = []  -- Base case: both lists are empty
+replicateElements (n:ns) (x:xs) = replicateManual n x ++ replicateElements ns xs
+replicateElements _ _ = error "Lists must have the same length"  -- Handle unequal list lengths
+
+replicateManual :: Int -> a -> [a]
+replicateManual 0 _ = []  -- Base case: zero repetitions, return an empty list
+replicateManual n x
+  | n > 0     = x : replicateManual (n - 1) x  -- Prepend `x` and recurse
+  | otherwise = error "Negative count not allowed"  -- Handle invalid input
+
+
+3)
+dropNth :: Int -> [a] -> [a]
+dropNth _ [] = []  -- If the list is empty, return an empty list
+dropNth n (x:xs) = dropHelper n 1 x xs  -- Start with index 1 (1-based index)
+
+dropHelper :: Int -> Int -> a -> [a] -> [a]
+dropHelper _ _ _ [] = []  -- Base case: if the list is empty, return an empty list
+dropHelper n i x xs
+  | i == n    = dropHelper n 1 xs  -- Skip this element when index is N, reset counter
+  | otherwise = x : dropHelper n (i + 1) xs  -- Keep the element and increment index
+
+4)
+splitAtLength :: Int -> [a] -> ([a], [a])
+splitAtLength 0 xs = ([], xs)  -- If length of first part is 0, second part is the whole list
+splitAtLength _ [] = ([], [])  -- If the list is empty, return two empty lists
+splitAtLength n (x:xs) = let (first, second) = splitAtLength (n - 1) xs
+                          in (x : first, second)
+
+5)
+createRange :: Int -> Int -> [Int]
+createRange start end = [start..end]
+
+6)
+isPrime :: Int -> String
+isPrime n
+  | n <= 1    = "No"   -- Numbers less than or equal to 1 are not prime
+  | otherwise = checkDivisors n 2
+
+checkDivisors :: Int -> Int -> String
+checkDivisors n divisor
+  | divisor * divisor > n = "Yes"    -- If divisor^2 is greater than n,it means no divisors were 				     --found, and n is prime, so the function returns "Yes".
+  | n `mod` divisor == 0  = "No"     -- If n is divisible by divisor, it's not prime
+  | otherwise = checkDivisors n (divisor + 1)  -- Check next divisor
+
+7)
+positiveFactors :: Int -> [Int]
+positiveFactors n = [x | x <- [1..n], n `mod` x == 0]
+
+8)
+smallestString :: [String] -> String
+smallestString [] = error "The list is empty"
+smallestString [x] = x  -- If there's only one string, it's the smallest
+smallestString (x:xs) = findSmallest x xs
+
+findSmallest :: String -> [String] -> String
+findSmallest smallest [] = smallest
+findSmallest smallest (x:xs)
+  | x < smallest = findSmallest x xs
+  | otherwise = findSmallest smallest xs
+
+

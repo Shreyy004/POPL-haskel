@@ -1,0 +1,91 @@
+Write Haskell Programs using Built-in methods as well as your own functions
+1. Find the last element of a list.
+2. Find the last-but-one (or second-last) element of a list.
+3. Find the K'th element of a list.
+4.Find the number of elements in a list.
+5. Reverse a list.
+6. Find out whether a list is a palindrome. [1,2,3] should return False, whereas [1,2,3,2,1] should return True. The code should also handle strings. An empty list is considered a Palindrome.
+7. Eliminate consecutive duplicates. "aaaabccaadeeee" should become "abcade"
+8. Pack consecutive duplicates of list elements into sublists. "aaaabccaadeeee" should become ["aaaa","b","cc","aa","d","eeee"]
+9. Do a run-length encoding for a String with continuous repreating characters. "aaaabccaadeeee" should become [('a',4), ('b',1), ('c',2), ('a',2), ('d',1), ('e',4)]
+10. Decode a run-length encoded list.
+
+
+lastele :: [Int] -> Int
+lastele [a] = a
+lastele (x:y:ys) = lastele (y:ys)
+
+secondLast :: [Int] -> Int
+secondLast [x, _] = x       
+secondLast (_:xs) = secondLast xs
+
+elek::[Int]->Int->Int
+elek(x:xs) 1=x
+elek(x:xs) k=elek xs (k-1)
+
+countele::[Int]->Int
+countele []=0
+countele (x:xs)=1+countele xs
+
+reverselist:: [Int]->[Int]
+reverselist []=[]
+reverselist(x:xs)=reverselist xs ++ [x]
+
+palindrome::Eq a => [a] -> Bool
+palindrome []=True
+palindrome [x]=True
+palindrome(x:xs)=(x== last xs) && palindrome(init xs)
+
+eliminatedup::Eq a=>[a]->[a]
+eliminatedup []=[]
+eliminatedup [x]=[x]
+eliminatedup (x:y:xs) 
+ | x == y    = eliminatedup (y:xs)   
+ |otherwise = x : eliminatedup (y:xs) 
+
+
+pack :: Eq  a => [a] -> [[a]]
+pack [] = [] 
+pack (x:xs) = packHelper (x:xs) []  
+
+packHelper :: Eq a => [a] -> [a] -> [[a]]
+packHelper [] currentGroup = [currentGroup]  
+packHelper (x:xs) [] = packHelper xs [x]   
+packHelper (x:xs) (y:ys)
+    | x == y    = packHelper xs (x:y:ys)  
+    | otherwise = (y:ys) : packHelper xs [x] 
+
+
+runLengthEncoding :: Eq a => [a] -> [(a, Int)]
+runLengthEncoding [] = []  
+runLengthEncoding (x:xs) = runLengthHelper (x:xs) x 1  
+
+runLengthHelper :: Eq a => [a] -> a -> Int -> [(a, Int)]
+runLengthHelper [] currentChar count = [(currentChar, count)] 
+runLengthHelper (x:xs) currentChar count
+    | x == currentChar = runLengthHelper xs currentChar (count + 1)  
+    | otherwise = (currentChar, count) : runLengthHelper xs x 1  
+
+decode :: [(a, Int)] -> [a]
+decode [] = []  
+decode ((x, n):xs) = replicate n x ++ decode xs
+
+
+main :: IO ()
+main = do
+    print (lastele [1, 2, 3, 4])
+    print (secondLast [1, 2, 3, 4])
+    print(elek [1,2,3,4] 1)
+    print(countele [1,2,3,4])
+    print(reverselist [1,2,3,4])
+    print (palindrome [1, 2, 3, 2, 1])
+    print (palindrome "racecar")  
+    print(eliminatedup [1,2,2,3,4,3,5,5])
+    print (pack [1, 1, 2, 2, 3, 3])
+    print (pack "aaaabccaadeeee")
+    print (runLengthEncoding "aaabbbccc") 
+    print (decode [('a', 4), ('b', 1), ('c', 2), ('a', 2), ('d', 1), ('e', 4)])
+    print (decode [('a', 3), ('b', 3), ('c', 3)])
+    
+    
+
