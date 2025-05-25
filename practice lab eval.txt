@@ -1,0 +1,8 @@
+1. Duplicate the elements of a list. If the original list is [1,2,3,4], the result should be [1,1,2,2,3,3,4,4]
+2. Modify Q1 solution such that you give two lists, the elements of second list needs to be repeated that many times as the first list's corresponding entry. For example, let the first list be [2,3,2] and the second list is [10, 11, 12]. The resulting list should be [10,10, 11,11,11, 12,12]
+3. Drop every N'th element from a list.
+4.Split a list into two parts; the length of the first part is given.
+5. Create a list containing all integers within a given range. If the range is between 5 and 9, the output should be [5,6,7,8,9]
+6. Write a function to check whether a number is prime. If 3 is given, it should return "Yes". If 6 is given, it should return "No"
+7. Write a function to return the positive factors of a positive integer as a list.
+8. Write a function that takes a list of Strings and returns the smallest string.
