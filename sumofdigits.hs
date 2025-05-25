@@ -1,3 +1,8 @@
-sumDigits :: Int -> Int
-sumDigits 0 = 0   -- Base case: when the number is 0, the sum of digits is 0
-sumDigits n = n `mod` 10 + sumDigits (n `div` 10)  -- Recursive case: add last digit and recurse
+sumOfDigit :: Float -> Integer
+sumOfDigit 0 = 0
+sumOfDigit n = mod k 10 + sumOfDigit (n / 10)
+  where
+    k = floor n
+
+sumOfDigitsOfThree :: Float -> Float -> Float -> Integer
+sumOfDigitsOfThree a b c = sumOfDigit a + sumOfDigit b + sumOfDigit c

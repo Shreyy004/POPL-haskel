@@ -1,0 +1,170 @@
+1. Print your address
+2. Calculate sum, difference, quotient, reminder and product of 2 numbers.
+3. calculate square, cube, square root of a given number
+4. Calculate simple interest.
+5. Calculate Compound Interest
+6. Convert distance from km to m
+7. Calculate area and volume of sphere
+8. Convert fahrenheit to celsius
+9. Find area of triangle
+10. Convert the given character to uppercase and find ASCII value
+11. Find the sum of digits of 3 numbers
+12. Interchange the value of 2 variables.
+13. Interchange the value of 2 variables without new variables.
+14. Calculate displacement s, given initial velocity u, acceleration a and time t. (s=ut+1/2 at^2).
+15. Find the average marks of 5 subjects.
+
+
+1)
+printAddress :: IO ()
+printAddress = putStrLn "Your address is: [Insert Address Here]"
+
+
+2)
+calculate :: Int -> Int -> (Int, Int, Int, Int, Int)
+calculate a b = (sumResult, diffResult, quotientResult, remainderResult, productResult)
+  where
+    sumResult = a + b
+    diffResult = a - b
+    quotientResult = a `div` b
+    remainderResult = a `mod` b
+    productResult = a * b
+
+main :: IO ()
+main = do
+    let (sumResult, diffResult, quotientResult, remainderResult, productResult) = calculate 10 5
+    putStrLn $ "Sum: " ++ show sumResult
+    putStrLn $ "Difference: " ++ show diffResult
+    putStrLn $ "Quotient: " ++ show quotientResult
+    putStrLn $ "Remainder: " ++ show remainderResult
+    putStrLn $ "Product: " ++ show productResult
+
+3)
+calculateSquareCubeSqrt :: Float -> (Float, Float, Float)
+calculateSquareCubeSqrt x = (square, cube, sqrtResult)
+  where
+    square = x * x
+    cube = x * x * x
+    sqrtResult = sqrt x
+
+main :: IO ()
+main = do
+    let (squareResult, cubeResult, sqrtResult) = calculateSquareCubeSqrt 9
+    putStrLn $ "Square: " ++ show squareResult
+    putStrLn $ "Cube: " ++ show cubeResult
+    putStrLn $ "Square Root: " ++ show sqrtResult
+
+4)
+calculateSimpleInterest :: Float -> Float -> Float -> Float
+calculateSimpleInterest p r t = (p * r * t) / 100
+
+main :: IO ()
+main = do
+    let simpleInterest = calculateSimpleInterest 1000 5 2
+    putStrLn $ "Simple Interest: " ++ show simpleInterest
+
+5)
+calculateCompoundInterest :: Float -> Float -> Float -> Float
+calculateCompoundInterest p r t = p * ((1 + r / 100) ** t) - p
+
+main :: IO ()
+main = do
+    let compoundInterest = calculateCompoundInterest 1000 5 2
+    putStrLn $ "Compound Interest: " ++ show compoundInterest
+
+6)
+convertKmToM :: Float -> Float
+convertKmToM km = km * 1000
+
+main :: IO ()
+main = do
+    let meters = convertKmToM 5
+    putStrLn $ "Distance in meters: " ++ show meters
+
+7)
+sphereCalculations :: Float -> (Float, Float)
+sphereCalculations r = (area, volume)
+  where
+    area = 4 * pi * r^2
+    volume = (4 / 3) * pi * r^3
+
+main :: IO ()
+main = do
+    let (area, volume) = sphereCalculations 5
+    putStrLn $ "Area of sphere: " ++ show area
+    putStrLn $ "Volume of sphere: " ++ show volume
+
+
+8)
+triangleArea :: Float -> Float -> Float -> Float
+triangleArea a b c = sqrt(s * (s - a) * (s - b) * (s - c))
+  where
+    s = (a + b + c) / 2
+
+main :: IO ()
+main = do
+    let area = triangleArea 3 4 5
+    putStrLn $ "Area of triangle: " ++ show area
+
+9)
+charToUpperAndAscii :: Char -> (Char, Int)
+charToUpperAndAscii c = (toUpper c, fromEnum (toUpper c))
+
+main :: IO ()
+main = do
+    let (upperChar, asciiValue) = charToUpperAndAscii 'a'
+    putStrLn $ "Uppercase character: " ++ [upperChar]
+    putStrLn $ "ASCII value: " ++ show asciiValue
+
+
+(without in-built func)
+charToUpperAndAscii :: Char -> (Char, Int)
+charToUpperAndAscii c = (toUpperManual c, asciiValue c)
+
+-- Convert character to uppercase manually
+toUpperManual :: Char -> Char
+toUpperManual ch
+    | ch >= 'a' && ch <= 'z' = toEnum (fromEnum ch - 32) -- Shift lowercase to uppercase
+    | otherwise = ch
+
+-- Get ASCII value manually
+asciiValue :: Char -> Int
+asciiValue ch = getAscii ch
+
+-- Calculate ASCII value using manual logic
+getAscii :: Char -> Int
+getAscii ch = findAscii ch 0
+  where
+    -- Compare character with incremented integers to find ASCII value
+    findAscii :: Char -> Int -> Int
+    findAscii currentChar currentAscii
+        | toEnum currentAscii == currentChar = currentAscii
+        | otherwise = findAscii currentChar (currentAscii + 1)
+
+11)
+sumOfDigits :: Int -> Int
+sumOfDigits n
+  | n == 0    = 0
+  | otherwise = n `mod` 10 + sumOfDigits (n `div` 10)
+
+sumOfThreeNumbers :: Int -> Int -> Int -> Int
+sumOfThreeNumbers a b c = sumOfDigits a + sumOfDigits b + sumOfDigits c
+
+12)
+swap :: (a, b) -> (b, a)
+swap (x, y) = (y, x)
+
+13)
+swapWithoutTemp :: Int -> Int -> (Int, Int)
+swapWithoutTemp x y = (x + y - x, x + y - y)
+
+14)
+calculateDisplacement :: Float -> Float -> Float -> Float
+calculateDisplacement u a t = u * t + 0.5 * a * t^2
+
+15)
+averageMarks :: [Float] -> Float
+averageMarks marks = sum marks / fromIntegral (length marks)
+
+
+
